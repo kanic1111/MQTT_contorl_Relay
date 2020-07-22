@@ -3,7 +3,7 @@ const app = express();
 const Readline = require('@serialport/parser-readline')
 const parser = new Readline()
 var SerialPort = require("serialport");
-var arduinoCOMPort = "COM5";
+var arduinoCOMPort = "COM4";
 var arduinoport = new SerialPort(arduinoCOMPort, {baudRate: 9600}).setEncoding('utf8');
 var i;
 var mqtt = require('mqtt')
@@ -12,7 +12,7 @@ arduinoport.on("open", () => {
   console.log('serial port open');
 },20);
 client.on('connect', function () {
-  client.subscribe('presence', function (err) {
+  client.subscribe('arduino', function (err) {
   })
 })
 client.on('message', function (topic, message) {
