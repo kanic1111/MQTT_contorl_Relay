@@ -15,11 +15,8 @@ const client  = mqtt.connect('mqtt://127.0.0.1')
 
 arduinoport.on("open", () => {
   console.log('serial port open');
-},200);
+},10);
 wss.on('connection', function connection(ws) {
-    setTimeout(function(){
-      arduinoport.write('s');
-    },1000)
   ws.on('message', function incoming(message) {
     console.log(message)
     arduinoport.write(message, (err) => {
@@ -34,15 +31,18 @@ arduinoport.pipe(parser)
 client.on('connect', function () {
   client.subscribe('arduino');
 });
+async function arduino_parser(){
 parser.on('data', line =>{
+  delay(1000)
   console.log(line)
   var Arduno_data = JSON.parse(line);
   // var data = Object.keys(Arduno_data) 
   var data_value = Object.values(Arduno_data)
   data = data_value;
-  asyncCall();
   },100)
+}
 async function asyncCall() {
+  await arduino_parser();
   const client  = mqtt.connect('mqtt://127.0.0.1')
   client.on('connect', function () {
     console.log(data);
@@ -50,3 +50,4 @@ async function asyncCall() {
     client.end()
   },100); 
 }
+arduino_parser()
