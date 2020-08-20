@@ -1,4 +1,3 @@
-const express = require('express');
 const Readline = require('@serialport/parser-readline')
 const parser = new Readline()
 var SerialPort = require("serialport");
@@ -12,7 +11,7 @@ arduinoport.on("open", () => {
   console.log('serial port open');
 },200);
 client.on('message', function (topic, message){
-    arduinoport.write(message, (err) => {
+    arduinoport.write(message, (err) => {n
       if (err) {
           return console.log('written error:',err.message);
         }
